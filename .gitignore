@@ -1,0 +1,22 @@
+# Dependencias
+node_modules/
+
+# Archivos de entorno y configuración sensible
+.env
+
+# Archivos basura de macOS
+.DS_Store
+._*
+.AppleDouble
+
+# Archivos basura de Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Archivos de VS Code
+.vscode/
+
+# Logs y bases de datos locales
+*.log
+*.sqlite

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Listado de Productos</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Listado de Productos</h1>
+
+    <section class="card">
+      <div class="barra-superior">
+        <button id="btnAgregar" class="btn-secundario">Agregar producto</button>
+        <button id="btnCargar">Cargar listado</button>
+      </div>
+
+      <div id="mensaje"></div>
+
+      <div class="tabla-responsive">
+        <table class="tabla">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nombre</th>
+              <th>Categoría</th>
+              <th>Precio</th>
+              <th>Stock</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="tablaProductosBody">
+            <tr>
+              <td colspan="6">Presione "Cargar listado" para mostrar los productos.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+
+  <script src="js/index.js"></script>
+</body>
+</html>
