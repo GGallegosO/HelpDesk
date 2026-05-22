@@ -1,19 +1,45 @@
 {
-  "name": "proyecto-js-capas",
+  "name": "helpdesk-system",
   "version": "1.0.0",
-  "description": "CRUD de productos con Express y MySQL",
+  "description": "Sistema HelpDesk con arquitectura por capas y autenticación básica",
   "main": "app.js",
+
   "scripts": {
     "start": "node app.js",
-    "dev": "node app.js"
+    "dev": "nodemon app.js"
   },
-  "keywords": [],
-  "author": "",
+
+  "keywords": [
+    "helpdesk",
+    "tickets",
+    "express",
+    "mysql",
+    "arquitectura-capas"
+  ],
+
+  "author": "Gustavo Gallegos",
+
   "license": "ISC",
+
   "dependencies": {
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
-    "mysql2": "^3.22.0"
-  }
+    "mysql2": "^3.22.3"
+  },
+
+  "devDependencies": {
+    "nodemon": "^3.1.0"
+  },
+
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GGallegosO/HelpDesk.git"
+  },
+
+  "bugs": {
+    "url": "https://github.com/GGallegosO/HelpDesk/issues"
+  },
+
+  "homepage": "https://github.com/GGallegosO/HelpDesk#readme"
 }
