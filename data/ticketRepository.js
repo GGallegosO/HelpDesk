@@ -5,14 +5,12 @@
 // Importamos la conexión a la base de datos configurada previamente
 const db = require('../config/db');
 
-/**
- * findAll: Recupera todos los tickets de la base de datos.
- * El uso de 'ORDER BY fechaCreacion DESC' asegura que los más recientes salgan primero.
- */
+
+//findAll: Recupera todos los tickets de la base de datos.
 const findAll = async () => {
     // db.execute devuelve un array donde el primer elemento son los resultados
     const [rows] = await db.execute(`
-        SELECT * FROM tickets 
+        SELECT * FROM tickets
         WHERE estado != 'resuelto'
         ORDER BY fechaCreacion DESC
     `);
