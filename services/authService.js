@@ -1,37 +1,31 @@
-// Responsabilidad: lógica del login.
-// Decide si el usuario entra o no.
+// Responsable:
+// lógica de login
 
-// Importar acceso a datos
 const userRepository = require('../data/userRepository');
 
-/**
- * Valida usuario y contraseña
- *
- * Retorna:
- * - usuario encontrado
- * - undefined si no existe
- */
 const validarUsuario = async (
         username,
         password
     ) => {
-        // Obtener usuarios almacenados
-        const usuarios = await userRepository.findAll();
-        // Buscar coincidencia
-        const usuarioEncontrado = usuarios.find( u =>
-            u.username === username
-            &&
-            u.password === password
+        const usuario = await userRepository.findByUsername
+        (
+            username
         );
-        // Retornar usuario
-        return usuarioEncontrado;
+
+        // Usuario no existe
+        if (!usuario) {
+            return null;
+        }
+
+
+        // Validar password
+        if (usuario.password!==password) {
+            return null;
+        }
+        return usuario;
     };
 
 
-// Exportar servicio
 module.exports = {
-
     validarUsuario
-
 };
-
