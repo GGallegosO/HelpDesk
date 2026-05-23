@@ -1,106 +1,57 @@
 
 /**
- * Middleware:
- * valida los datos del ticket
- * antes de llegar al controlador.
- *
- * Si hay error → corta flujo.
- * Si todo está correcto → next()
+ * Middleware para validar la estructura del ticket.
+ * Actúa como filtro antes de que la petición llegue al controlador.
  */
 
-const validarTicket = (req,res,next) => {
+const validarTicket = (req, res, next) => {
+    const { nombreSolicitante, correo, categoria, impacto, urgencia, tiempoEstimado } = req.body;
 
-// Extraer campos enviados
-const {
-nombreSolicitante,
-correo,
-categoria,
-impacto,
-urgencia,
-tiempoEstimado
+    // Validar campos obligatorios
+    if (
+        !nombreSolicitante || 
+        !correo ||
+        !categoria || 
+        !impacto || 
+        !urgencia || 
+        !tiempoEstimado) 
+        {
+        return res.status(400).json({
+            mensaje: 'Error: Todos los campos son obligatorios.' 
+        });
+    }
 
-} =
-req.body;
+    // Validar formato de correo (Regex)
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(correo)) {
+        return res.status(400).json({ mensaje: 'Error: formato correo inválido' });
+    }
 
+    // Validar listas permitidas para impacto y urgencia
+    const valoresPermitidos = ['bajo', 'medio', 'alto', 'baja', 'media', 'alta'];
+    const impactoNormalizado = impacto.toLowerCase();
+    const urgenciaNormalizada = urgencia.toLowerCase();
 
-// =====================
-// Validar obligatorios
-// =====================
+    if (
+        !valoresPermitidos.includes(impactoNormalizado) 
+        ||
+        !valoresPermitidos.includes(urgenciaNormalizada)) {
+        return res.status(400).json({ mensaje: 'Impacto o urgencia inválidos' });
+    }
 
-if( !nombreSolicitante ||
-!correo ||
-!categoria ||
-!impacto ||
-!urgencia ||
-!tiempoEstimado
+    // Categorías permitidas
+    // Definimos el catálogo de categorías que nuestro sistema soporta
+    const categorias = ['hardware', 'software', 'red', 'cuenta', 'otro'];
 
-){
+    // Verificamos que la categoría recibida esté dentro de nuestra lista permitida
+    if (!categorias.includes(categoria.toLowerCase())) {
+        return res.status(400).json({
+            mensaje: 'Categoría inválida. Debe ser: hardware, software, red, cuenta u otro.'
+        });
+    }
 
-return res.status(400).json({
-mensaje:'Error: Todos los campos son obligatorios.'});
-}
-
-
-// =====================
-// Validar correo
-// =====================
-
-// Expresión regular básica
-const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-// Si correo inválido
-if(!emailRegex.test(correo)){
-    return res.status(400).json({mensaje:'Error: formato correo inválido'});
-}
-
-
-// =====================
-// Validar listas
-// =====================
-
-const valoresPermitidos = [
-
-'bajo',
-'medio',
-'alto',
-'baja',
-'media',
-'alta'
-
-];
-
-
-// Convertir a minúscula
-const impactoNormalizado = impacto.toLowerCase();
-
-const urgenciaNormalizada = urgencia.toLowerCase();
-
-
-// Validar valores
-if(
-!valoresPermitidos.includes(impactoNormalizado)
-
-||
-
-!valoresPermitidos.includes(urgenciaNormalizada)
-
-){
-
-return res.status(400).json({mensaje:'Impacto o urgencia inválidos'});
-}
-
-
-// =====================
-// Continuar flujo
-// =====================
-
-next();
-
+    // Si todas las validaciones pasan, next() permite avanzar al controlador
+    next();
 };
 
-
-// Exportar
-module.exports = {
-
-validarTicket
-
-};
+module.exports = { validarTicket };

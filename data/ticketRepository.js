@@ -1,108 +1,90 @@
-// data/ticketRepository.js
 
-// Responsable:
-// leer y guardar tickets
-// NO contiene reglas de negocio
+// RESPONSABILIDAD: Acceso a datos. 
+// Esta capa es la única que interactúa con la base de datos.
 
-const fs = require('fs').promises;
+// Importamos la conexión a la base de datos configurada previamente
+const db = require('../config/db');
 
-const path = require('path');
+/**
+ * findAll: Recupera todos los tickets de la base de datos.
+ * El uso de 'ORDER BY fechaCreacion DESC' asegura que los más recientes salgan primero.
+ */
+const findAll = async () => {
+    // db.execute devuelve un array donde el primer elemento son los resultados
+    const [rows] = await db.execute(`
+        SELECT * FROM tickets 
+        WHERE estado != 'resuelto'
+        ORDER BY fechaCreacion DESC
+    `);
+    return rows;
+};
 
+/**
+ * findById: Busca un ticket específico por su ID.
+ * Usamos '?' como placeholder para prevenir ataques de Inyección SQL.
+ */
+const findById = async (id) => {
+    const [rows] = await db.execute(`
+        SELECT * FROM tickets WHERE id = ?
+    `, [id]);
 
-// Ruta JSON
-const dataPath =
+    // Retornamos solo el primer registro encontrado
+    return rows[0];
+};
 
-    path.join(
+/**
+ * save: Inserta un nuevo ticket en la base de datos.
+ * El '?' actúa como un parámetro seguro para evitar inyección de código.
+ */
+const save = async (ticket) => {
+    const [result] = await db.execute(`
+        INSERT INTO tickets (
+            nombreSolicitante, correo, categoria, descripcion, 
+            impacto, urgencia, tiempoEstimado, prioridad, estado
+        )
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `, [
+        ticket.nombreSolicitante,
+        ticket.correo,
+        ticket.categoria,
+        ticket.descripcion,
+        ticket.impacto,
+        ticket.urgencia,
+        ticket.tiempoEstimado,
+        ticket.prioridad,
+        'pendiente' // Definimos el estado inicial por defecto aquí
+    ]);
 
-        __dirname,
+    return result;
+};
 
-        'tickets.json'
-
+/**
+ * cerrar: Actualiza el estado de un ticket a 'resuelto'.
+ * Es un ejemplo de una operación de escritura específica (UPDATE).
+ */
+const cerrar = async (id) => {
+    const [result] = await db.execute(`
+        UPDATE tickets SET estado = 'resuelto' WHERE id = ?`,
+        [id]
     );
 
+    return result;
+};
 
-// ======================
-// LEER TODO
-// ======================
-
-const findAll =
-    async () => {
-
-        try {
-            const raw =
-                await fs.readFile(dataPath,'utf8');
-
-            // Convertir
-            return JSON.parse(raw);
-
-        }
-        catch (error) {
-
-            // Si archivo vacío
-            return [];
-        }
+// Obtener historial completo
+const findHistorial = async () => {
+    const [rows] = await db.execute(`
+        SELECT * FROM tickets
+        ORDER BY fechaCreacion DESC
+        `);
+        return rows;
     };
 
-
-// ======================
-// GUARDAR TODO
-// ======================
-
-const saveAll =
-    async (
-        tickets
-    ) => {
-
-        await fs
-            .writeFile(
-
-                dataPath,
-
-                JSON.stringify(
-                    tickets,
-                    null,
-                    2
-                )
-
-            );
-
-    };
-
-
-// ======================
-// BUSCAR ID
-// ======================
-
-const findById =
-    async (
-        id
-    ) => {
-
-        const tickets =
-
-            await findAll();
-
-        return tickets.find(
-
-            t =>
-
-                t.id == id
-
-        );
-
-    };
-
-
-// ======================
-// EXPORTAR
-// ======================
-
-module.exports = {
-
+// Exportamos las funciones para que el Service pueda usarlas
+module.exports={
     findAll,
-
-    saveAll,
-
-    findById
-
+    findHistorial,
+    findById,
+    save,
+    cerrar
 };

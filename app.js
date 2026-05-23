@@ -2,6 +2,8 @@
 // IMPORTACIONES
 // ============================
 
+require('dotenv').config();
+
 // Framework principal
 const express = require('express');
 
@@ -60,11 +62,11 @@ app.get('/', (req, res) => {
 // INICIAR SERVIDOR
 // ============================
 
-const PORT = 3000;
+const PORT = process.env.PORT
 
 app.listen( PORT, () => {
         console.log(
-            `Servidor iniciado en puerto ${PORT}`
+            `Servidor ejecutándose en http://localhost:${PORT}`
         );
     }
 );

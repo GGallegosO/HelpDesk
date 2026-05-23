@@ -1,45 +1,31 @@
+// Responsable:
+// acceso a datos de usuarios.
+// Solo consulta MySQL.
+
+const db = require('../config/db');
+
+// Obtener todos
+const findAll =
+    async () => {
+
+        const[rows] = await db.execute
+        (`SELECT * FROM users`);
+        return rows;
+    };
 
 
-// Módulo para trabajar con archivos usando promesas
-const fs = require('fs').promises;
-
-// Módulo para construir rutas seguras
-const path = require('path');
-
-
-// Construye la ruta absoluta:
-// data/users.json
-const dataPath =
-    path.join(
-        __dirname,
-        'users.json'
-    );
-
-
-// Busca un usuario por nombre
-async function findByUser(usuario) {
-
-    // Leer archivo JSON
-    const raw =
-        await fs.readFile(
-            dataPath,
-            'utf8'
+// Buscar por username
+const findByUsername = async (username) => {
+        const[rows]= await db.execute(`
+            SELECT * FROM users WHERE username = ?`, 
+            [username]
         );
-
-    // Convertir texto JSON → objeto JS
-    const users =
-        JSON.parse(raw);
-
-    // Buscar coincidencia
-    return users.find(
-        user =>
-            user.usuario === usuario
-    );
-
-}
+        return rows[0];
+    };
 
 
-// Exportar función
+// Exportar
 module.exports = {
-    findByUser
+    findAll,
+    findByUsername
 };
