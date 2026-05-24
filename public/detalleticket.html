@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalle de Ticket</title>
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/evaluarTicket.css">
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <h2>Detalle de Ticket Resuelto</h2>
+        <div class="nav-controls">
+            <button id="themeToggle" class="btn-tab">🌙</button>
+        </div>
+    </nav>
+
+    <main class="dashboard-container">
+        <div class="form-container">
+            <h2 style="text-align: center; margin-bottom: 20px;">Resumen del Caso</h2>
+
+            <!-- Info del solicitante -->
+            <div id="detalleTicketOriginal" class="ticket-info-box">
+                <p><strong>Cargando datos del ticket...</strong></p>
+            </div>
+
+            <!-- Campos de evaluación en modo solo lectura -->
+            <div id="detalleEvaluacion">
+                <p style="text-align:center; color: var(--text-label);">Cargando evaluación...</p>
+            </div>
+
+            <div class="form-actions" style="margin-top: 24px;">
+                <button id="btnVolver" class="btn-danger">Volver</button>
+                <button id="btnResolver" class="btn-success" style="display:none; flex:1;">Resolver Ticket</button>
+            </div>
+
+        </div>
+    </main>
+
+    <script src="js/detalleTicket.js"></script>
+</body>
+
+</html>

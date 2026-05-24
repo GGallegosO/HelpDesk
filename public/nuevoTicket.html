@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrar Nuevo Ticket</title>
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/nuevoTicket.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/evaluarTicket.css">
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <h2>Registrar Nuevo Ticket</h2>
+        <div class="nav-controls">
+            <button id="themeToggle" class="btn-tab">🌙</button>
+            <button id="btnLogout" class="btn-danger">Cerrar Sesión</button>
+        </div>
+    </nav>
+
+    <main class="dashboard-container">
+        <div class="form-container">
+
+            <form id="formNuevoTicket">
+
+                <!-- Fila 1: Nombre y Correo lado a lado -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Nombre del Solicitante *</label>
+                        <input type="text" id="nombreSolicitante" required placeholder="Ej: Juan Pérez">
+                    </div>
+                    <div class="form-group">
+                        <label>Correo Electrónico *</label>
+                        <input type="email" id="correo" required placeholder="Ej: juan@empresa.com">
+                    </div>
+                </div>
+
+                <!-- Descripción ancho completo -->
+                <div class="form-group">
+                    <label>Descripción del Problema *</label>
+                    <textarea id="descripcion" rows="4" required
+                        placeholder="Describe el problema con el mayor detalle posible..."></textarea>
+                </div>
+
+                <!-- Campos exclusivos para admin -->
+                <div id="camposAdmin" style="display: none;">
+
+                    <!-- Fila 2: Categoría e Impacto -->
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Categoría *</label>
+                            <select id="categoria">
+                                <option value="">Seleccione una opción...</option>
+                                <option value="hardware">Hardware</option>
+                                <option value="software">Software</option>
+                                <option value="red">Red</option>
+                                <option value="cuenta">Cuenta</option>
+                                <option value="otro">Otro</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Impacto *</label>
+                            <select id="impacto">
+                                <option value="">Seleccione una opción...</option>
+                                <option value="bajo">Bajo</option>
+                                <option value="medio">Medio</option>
+                                <option value="alto">Alto</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Fila 3: Urgencia y Tiempo -->
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Urgencia *</label>
+                            <select id="urgencia">
+                                <option value="">Seleccione una opción...</option>
+                                <option value="baja">Baja</option>
+                                <option value="media">Media</option>
+                                <option value="alta">Alta</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Tiempo Estimado (Horas) *</label>
+                            <input type="number" id="tiempoEstimado" min="1" placeholder="Ej: 2">
+                        </div>
+                    </div>
+
+                    <!-- Prioridad ancho completo -->
+                    <div class="form-group">
+                        <label>Prioridad Calculada</label>
+                        <input type="text" id="prioridadCalculada" disabled
+                            placeholder="Se calculará automáticamente...">
+                    </div>
+
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" id="btnCancelar" class="btn-danger">Cancelar</button>
+                    <button type="submit" class="btn-primary">Guardar Ticket</button>
+                </div>
+
+            </form>
+
+        </div>
+    </main>
+
+    <script src="js/nuevoTicket.js"></script>
+</body>
+
+</html>

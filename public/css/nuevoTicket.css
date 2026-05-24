@@ -1,0 +1,154 @@
+/* =========================================
+    FORMULARIO DE TICKETS
+========================================= */
+
+/* Tarjeta contenedora del formulario.
+   Usa variables CSS para adaptarse automáticamente al modo claro/oscuro. */
+.form-container {
+    background-color: var(--bg-container);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    /* Esquinas más redondeadas que el dashboard (8px vs 12px) */
+    padding: 32px;
+    /* Espacio interno generoso para que no se vea apretado */
+    max-width: 640px;
+    /* Evita que el formulario se estire en pantallas anchas */
+    margin: 0 auto;
+    /* Centra la tarjeta horizontalmente en la página */
+}
+
+/* Agrupa cada campo: label + input/textarea */
+.form-group {
+    margin-bottom: 20px;
+    /* Espacio entre un campo y el siguiente */
+}
+
+/* Estilo de las etiquetas de cada campo */
+.form-group label {
+    display: block;
+    /* Ocupa toda la línea, fuerza al input a ir abajo */
+    margin-bottom: 8px;
+    font-size: 0.75rem;
+    /* Más pequeño que el texto normal, es una etiqueta secundaria */
+    font-weight: 600;
+    letter-spacing: 0.4px;
+    /* Separa levemente las letras, mejora legibilidad en pequeño */
+    text-transform: uppercase;
+    /* Estilo de etiqueta tipo formulario profesional */
+    color: var(--text-label);
+    /* Color gris adaptable al tema */
+}
+
+/* Estilo base compartido por inputs, selects y textareas */
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    box-sizing: border-box;
+    /* El padding no suma al ancho total, evita desbordamiento */
+    padding: 11px 14px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    font-family: inherit;
+    /* Hereda la fuente del body, evita que el browser ponga otra */
+    font-size: 0.95rem;
+    background-color: var(--bg-input);
+    color: var(--text-main);
+    outline: none;
+    /* Quita el borde azul nativo del browser al hacer focus */
+    transition: border-color 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+/* Cuando el usuario hace clic en un campo, se resalta visualmente */
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    border-color: var(--primary-color);
+    /* El borde cambia al color principal */
+    background-color: var(--bg-input);
+    box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.15);
+    /* Anillo translúcido alrededor del campo */
+}
+
+/* El textarea necesita más altura que un input normal */
+.form-group textarea {
+    min-height: 130px;
+    /* Alto mínimo, el usuario puede estirarlo hacia abajo */
+    resize: vertical;
+    /* Solo permite redimensionar verticalmente, no horizontal */
+    line-height: 1.6;
+    /* Más espacio entre líneas para facilitar la lectura */
+}
+
+/* Línea divisoria horizontal entre los campos y los botones */
+.form-divider {
+    border: none;
+    /* Resetea el borde por defecto del <hr> */
+    border-top: 1px solid var(--border-color);
+    /* Solo dibuja la línea superior */
+    margin: 24px 0 20px;
+}
+
+/* Contenedor de los botones Cancelar y Guardar */
+.form-actions {
+    display: flex;
+    align-items: center;
+    /* Alinea ambos botones a la misma altura vertical */
+    gap: 12px;
+    /* Espacio entre los botones */
+}
+
+/* Botón secundario: no debe llamar la atención, solo estar disponible */
+.form-actions .btn-cancel {
+    width: auto;
+    min-width: 120px;
+    /* Evita que quede demasiado pequeño si el texto es corto */
+    padding: 12px 24px;
+    background: transparent;
+    /* Sin fondo, solo el borde lo define */
+    border: 1px solid var(--border-color);
+    color: var(--text-label);
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: border-color 0.15s, color 0.15s;
+}
+
+/* Al pasar el mouse, da una pista visual de que es una acción "peligrosa" (cancelar) */
+.form-actions .btn-cancel:hover {
+    border-color: #dc2626;
+    color: #dc2626;
+}
+
+/* Botón principal: ocupa todo el espacio sobrante junto al botón Cancelar */
+.form-actions .btn-submit {
+    flex: 1;
+    /* Se estira para llenar el espacio disponible */
+    padding: 12px 24px;
+    background-color: var(--primary-color);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+    cursor: pointer;
+    transition: background-color 0.15s ease, transform 0.1s ease;
+}
+
+.form-actions .btn-submit:hover {
+    opacity: 0.9;
+    /* Oscurece levemente sin necesitar un color hardcodeado */
+}
+
+.form-actions .btn-submit:active {
+    transform: scale(0.99);
+    /* Efecto de "presión" al hacer clic */
+}
+
+/* Margen extra para el botón de logout en la navbar */
+#btnLogout {
+    margin-left: 12px;
+}
+
