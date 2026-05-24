@@ -1,29 +1,150 @@
-// routes/ticketRoutes.js
-const express = require('express');
-const router = express.Router();
 
-const ticketController = require('../controllers/ticketController');
-const { validarTicket } = require('../middlewares/ticketValidator');
-const { verificarAuth } = require('../middlewares/authMiddleware');
 
-/**
- * TODAS LAS RUTAS ESTÁN PROTEGIDAS
- * El usuario DEBE estar autenticado para listar, ver, crear o resolver tickets.
- */
+// Responsable:
+// Definir endpoints
+// y conectar middlewares.
 
-// GET '/': Lista todos los tickets (Protegido)
-router.get('/', verificarAuth, ticketController.listar);
+const express =
+    require(
+        'express'
+    );
 
-// GET '/historial': Lista todos los tickets (Protegido)
-router.get('/historial', verificarAuth, ticketController.historial);
+const router =
+    express.Router();
 
-// GET '/:id': Obtiene el detalle de un ticket específico (Protegido)
-router.get('/:id', verificarAuth, ticketController.obtenerPorId);
 
-// POST '/': Crea un nuevo ticket (Protegido)
-router.post('/', verificarAuth, validarTicket, ticketController.crear);
+// Importar controlador
+const ticketController =
+    require(
+        '../controllers/ticketController'
+    );
 
-// PATCH '/:id/resolver': Resuelve un ticket (Protegido)
-router.patch('/:id/resolver', verificarAuth, ticketController.resolver);
 
-module.exports = router;
+// Middleware validación
+const {
+    validarTicket
+} =
+    require(
+        '../middlewares/ticketValidator'
+    );
+
+
+// Middleware seguridad
+const {
+    verificarAuth
+} =
+    require(
+        '../middlewares/authMiddleware'
+    );
+
+
+// ======================================
+// RUTAS PÚBLICAS
+// ======================================
+
+
+// POST /tickets
+// Crear ticket
+// Usuario NO requiere login
+
+router.post(
+
+    '/',
+
+    validarTicket,
+
+    ticketController.crear
+
+);
+
+
+// ======================================
+// RUTAS ADMIN
+// Requieren token
+// ======================================
+
+
+// GET /tickets
+// Listar activos
+
+router.get(
+
+    '/',
+
+    verificarAuth,
+
+    ticketController.listar
+
+);
+
+
+// GET /tickets/historial
+// Historial completo
+
+router.get(
+
+    '/historial',
+
+    verificarAuth,
+
+    ticketController.historial
+
+);
+
+
+// GET /tickets/:id
+// Obtener ticket
+
+router.get(
+
+    '/:id',
+
+    verificarAuth,
+
+    ticketController.obtenerPorId
+
+);
+
+
+// PUT /tickets/:id/evaluar
+// Clasificar ticket
+
+router.put(
+
+    '/:id/evaluar',
+
+    verificarAuth,
+
+    ticketController.evaluar
+
+);
+
+
+// PATCH /tickets/:id/resolver
+// Resolver ticket
+
+router.patch(
+
+    '/:id/resolver',
+
+    verificarAuth,
+
+    ticketController.resolver
+
+);
+
+// PUT /tickets/:id
+// Editar ticket completo
+
+router.put(
+    '/:id',
+    verificarAuth,
+    ticketController.editar
+);
+
+// ======================================
+// EXPORTAR
+// ======================================
+
+module.exports =
+    router;

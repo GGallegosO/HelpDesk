@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Ticket</title>
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/nuevoTicket.css">
+    <link rel="stylesheet" href="css/evaluarTicket.css">
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <h2>Editar Ticket</h2>
+        <div class="nav-controls">
+            <button id="themeToggle" class="btn-tab">🌙</button>
+        </div>
+    </nav>
+
+    <main class="dashboard-container">
+        <div class="form-container">
+            <h2 style="text-align: center; margin-bottom: 20px;">Modificar Ticket</h2>
+
+            <form id="formEditar">
+
+                <!-- Fila 1: Nombre y Correo -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Nombre del Solicitante *</label>
+                        <input type="text" id="nombreSolicitante" required placeholder="Ej: Juan Pérez">
+                    </div>
+                    <div class="form-group">
+                        <label>Correo Electrónico *</label>
+                        <input type="email" id="correo" required placeholder="Ej: juan@empresa.com">
+                    </div>
+                </div>
+
+                <!-- Descripción ancho completo -->
+                <div class="form-group" style="grid-column: 1 / -1;">
+                    <label>Descripción del Problema *</label>
+                    <textarea id="descripcion" rows="3" required
+                        placeholder="Describe el problema..."></textarea>
+                </div>
+
+                <!-- Fila 2: Categoría e Impacto -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Categoría *</label>
+                        <select id="categoria" required>
+                            <option value="">Seleccione...</option>
+                            <option value="hardware">Hardware</option>
+                            <option value="software">Software</option>
+                            <option value="red">Red</option>
+                            <option value="cuenta">Cuenta</option>
+                            <option value="otro">Otro</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Impacto *</label>
+                        <select id="impacto" required>
+                            <option value="">Seleccione...</option>
+                            <option value="bajo">Bajo</option>
+                            <option value="medio">Medio</option>
+                            <option value="alto">Alto</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Fila 3: Urgencia y Tiempo -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Urgencia *</label>
+                        <select id="urgencia" required>
+                            <option value="">Seleccione...</option>
+                            <option value="baja">Baja</option>
+                            <option value="media">Media</option>
+                            <option value="alta">Alta</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Tiempo Estimado (Horas) *</label>
+                        <input type="number" id="tiempoEstimado" min="1" required placeholder="Ej: 2">
+                    </div>
+                </div>
+
+                <!-- Prioridad calculada ancho completo -->
+                <div class="form-group" style="grid-column: 1 / -1;">
+                    <label>Prioridad Calculada</label>
+                    <input type="text" id="prioridadCalculada" disabled
+                        placeholder="Se calculará automáticamente...">
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" id="btnVolver" class="btn-danger">Volver</button>
+                    <button type="submit" class="btn-primary">Guardar Cambios</button>
+                </div>
+
+            </form>
+        </div>
+    </main>
+
+    <script src="js/editarTicket.js"></script>
+</body>
+
+</html>

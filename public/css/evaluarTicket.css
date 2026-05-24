@@ -1,0 +1,83 @@
+/* =========================================
+    ESTILOS ESPECÍFICOS DE EVALUAR TICKET
+========================================= */
+
+.ticket-info-box {
+    background-color: rgba(0, 0, 0, 0.05);
+    padding: 15px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    border-left: 4px solid var(--primary-color, #0056b3);
+    text-align: left;
+    grid-column: 1 / -1; /* Ocupa ancho completo dentro del grid */
+}
+
+.ticket-info-box p {
+    margin: 5px 0;
+}
+
+.dark-mode .ticket-info-box {
+    background-color: rgba(255, 255, 255, 0.05);
+    border-left-color: #7c6fff;
+}
+
+/* =========================================
+    GRID 2 COLUMNAS
+========================================= */
+
+#formEvaluacion,
+#detalleEvaluacion {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px 24px;
+}
+
+/* Labels compactos */
+#formEvaluacion .form-group label,
+#detalleEvaluacion .form-group label {
+    font-size: 0.72rem;
+    margin-bottom: 4px;
+}
+
+/* Inputs compactos */
+#formEvaluacion .form-group input,
+#formEvaluacion .form-group select,
+#detalleEvaluacion .form-group input {
+    padding: 8px 12px;
+    font-size: 0.9rem;
+}
+
+/* =========================================
+    LAYOUT NUEVO TICKET (form-row)
+========================================= */
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px 24px;
+    margin-bottom: 0;
+}
+
+/* =========================================
+    BOTONES — siempre ancho completo
+========================================= */
+
+.form-actions {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 8px;
+}
+
+.form-actions .btn-cancel,
+.form-actions .btn-danger {
+    min-width: 120px;
+    padding: 12px 24px;
+}
+
+.form-actions .btn-submit,
+.form-actions .btn-primary {
+    flex: 1;
+    padding: 12px 24px;
+}

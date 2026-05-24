@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-width=1.0">
+    <title>HelpDesk - Panel Principal</title>
+    
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+
+  <!-- <script src="/js/dashboard.js"></script>  -->
+
+</head>
+
+<body>
+  <nav class="navbar">
+    <h2>Panel de Soporte Técnico</h2>
+    <div class="nav-controls">
+      <button id="themeToggle" class="theme-toggle" title="Cambiar tema">🌙</button>
+      <button id="btnLogout" class="btn-danger">Cerrar Sesión</button>
+    </div>
+  </nav>
+
+  <main class="dashboard-container">
+
+    <section class="controls-section">
+      <button id="btnNuevoTicket" class="btn-primary">+ Nuevo Ticket</button>
+
+      <div class="filtros">
+        <button id="btnActivos" class="btn-tab active">Tickets Activos</button>
+        <button id="btnHistorial" class="btn-tab">Historial (Resueltos)</button>
+      </div>
+    </section>
+
+    <section class="table-container">
+      <table id="tablaTickets">
+        <thead>
+          <tr>
+              <th data-col="id">ID ↕</th>
+              <th data-col="nombre">Solicitante ↕</th>
+              <th data-col="categoria">Categoría ↕</th>
+              <th data-col="prioridad">Prioridad ↕</th>
+              <th data-col="estado">Estado ↕</th>
+              <th data-col="fecha">Fecha ↕</th>
+              <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody id="tbodyTickets">
+          <tr>
+            <td colspan="7" style="text-align: center;">Cargando tickets...</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+  </main>
+
+  <script src="js/dashboard.js"></script>
+</body>
+
+</html>

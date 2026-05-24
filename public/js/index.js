@@ -1,86 +1,101 @@
-const btnAgregar = document.getElementById('btnAgregar');
-const btnCargar = document.getElementById('btnCargar');
-const tablaProductosBody = document.getElementById('tablaProductosBody');
-const mensaje = document.getElementById('mensaje');
+// public/js/index.js
 
-btnAgregar.addEventListener('click', () => {
-  window.location.href = 'ingresar.html';
-});
+// =========================================
+//  MANEJO DEL MODO OSCURO (UI/UX)
+// =========================================
+// Capturamos el botón y el cuerpo entero del documento (HTML)
+const themeToggle = document.getElementById('themeToggle');
+const body = document.body;
 
-btnCargar.addEventListener('click', cargarProductos);
-
-document.addEventListener('DOMContentLoaded', cargarProductos);
-
-document.addEventListener('click', async (e) => {
-  if (e.target.classList.contains('btn-eliminar')) {
-    const id = e.target.dataset.id;
-    await eliminarProducto(id);
-  }
-
-  if (e.target.classList.contains('btn-actualizar')) {
-    const id = e.target.dataset.id;
-    window.location.href = `ingresar.html?id=${id}`;
-  }
-});
-
-async function cargarProductos() {
-  mensaje.innerHTML = '';
-
-  try {
-    const response = await fetch('/api/productos');
-    const data = await response.json();
-
-    if (!data.ok || data.data.length === 0) {
-      tablaProductosBody.innerHTML = `
-        <tr>
-          <td colspan="6">No hay productos registrados.</td>
-        </tr>
-      `;
-      return;
-    }
-
-    tablaProductosBody.innerHTML = data.data.map(producto => `
-      <tr>
-        <td>${producto.id}</td>
-        <td>${producto.nombre}</td>
-        <td>${producto.categoria}</td>
-        <td>$${Number(producto.precio).toFixed(2)}</td>
-        <td>${producto.stock}</td>
-        <td>
-          <button class="btn-accion btn-actualizar" data-id="${producto.id}">Actualizar</button>
-          <button class="btn-accion btn-eliminar btn-peligro" data-id="${producto.id}">Eliminar</button>
-        </td>
-      </tr>
-    `).join('');
-  } catch (error) {
-    tablaProductosBody.innerHTML = `
-      <tr>
-        <td colspan="6">Error al cargar los productos.</td>
-      </tr>
-    `;
-  }
+// Al cargar la página, le preguntamos a la memoria del navegador (localStorage)
+// si el usuario ya había elegido el modo oscuro en una visita anterior.
+// El localStorage no se borra aunque el usuario cierre la pestaña.
+if (localStorage.getItem('theme') === 'dark') {
+    body.classList.add('dark-mode'); // Le aplicamos la clase CSS
+    themeToggle.textContent = '☀️';   // Cambiamos el icono
+} else {
+    themeToggle.textContent = '🌙';   // Por defecto se queda claro
 }
 
-async function eliminarProducto(id) {
-  const confirmar = confirm('¿Desea eliminar este producto?');
-  if (!confirmar) {
-    return;
-  }
+// "Escuchamos" cada vez que el usuario hace clic en el botón de la luna/sol
+themeToggle.addEventListener('click', () => {
+    // toggle() es un interruptor: si la clase 'dark-mode' está, la quita. Si no está, la pone.
+    body.classList.toggle('dark-mode');
 
-  try {
-    const response = await fetch(`/api/productos/${id}`, {
-      method: 'DELETE'
-    });
+    // Verificamos cómo quedó el body después del clic
+    const isDark = body.classList.contains('dark-mode');
 
-    const data = await response.json();
+    // Guardamos la nueva preferencia en el navegador para su próxima visita
+    localStorage.setItem('theme', isDark ? 'dark' : 'light');
 
-    if (data.ok) {
-      mensaje.innerHTML = `<p class="exito">${data.mensaje}</p>`;
-      await cargarProductos();
-    } else {
-      mensaje.innerHTML = `<p class="error">${data.mensaje}</p>`;
+    // Actualizamos el icono visualmente (Operador ternario: Si es dark ? pon sol : si no pon luna)
+    themeToggle.textContent = isDark ? '☀️' : '🌙';
+});
+
+
+// =========================================
+//  LÓGICA DE INICIO DE SESIÓN Y ENRUTAMIENTO
+// =========================================
+// Capturamos el formulario completo y escuchamos el evento 'submit' (cuando se presiona "Entrar")
+document.getElementById('loginForm').addEventListener('submit', async (evento) => {
+
+    // EXTREMADAMENTE IMPORTANTE: preventDefault() evita que el navegador 
+    // recargue la página o intente enviar los datos por la URL por defecto.
+    evento.preventDefault();
+
+    // Capturamos los valores que el usuario escribió en las cajas de texto
+    const user = document.getElementById('username').value;
+    const pass = document.getElementById('password').value;
+    const mensajeError = document.getElementById('mensajeError');
+
+    // Ocultamos cualquier mensaje de error de un intento fallido anterior
+    mensajeError.style.display = 'none';
+
+    try {
+        // Hacemos la petición HTTP POST a nuestro backend usando Fetch API
+        // Usamos 'await' porque el servidor tarda unos milisegundos en responder
+        const response = await fetch('http://localhost:3000/auth/login', {
+            method: 'POST', // Método para enviar datos sensibles
+            headers: {
+                'Content-Type': 'application/json' // Le decimos al backend "Te mando un JSON"
+            },
+            // Convertimos las variables de JS a texto JSON para que viajen por la red
+            body: JSON.stringify({ username: user, password: pass })
+        });
+
+        // Convertimos la respuesta de texto que nos devolvió el servidor a un objeto de JS
+        const data = await response.json();
+
+        // response.ok es true si el backend respondió con códigos 200 a 299 (Ej: 200 OK)
+        // Será false si el backend respondió 401 (No Autorizado) o 500 (Error de servidor)
+        if (response.ok) {
+
+            // EL NAVEGADOR GUARDA LOS SECRETOS
+            // Guardamos la llave maestra  y el rol (admin/usuario) en el localStorage.
+            // Esto servirá para que las otras páginas (dashboard.html) sepan quién es.
+            localStorage.setItem('token', data.token);
+            localStorage.setItem('rol', data.rol);
+
+            //EL DIRECTOR DE TRÁFICO (Control de Acceso Básico)
+            // Leemos el rol que nos dio el backend y redirigimos la página (cambiamos la URL)
+            if (data.rol === 'admin') {
+                window.location.href = 'dashboard.html'; // El admin va al panel de control
+            } else {
+                window.location.href = 'nuevoTicket.html'; // El usuario va directo a crear ticket
+            }
+
+        } else {
+            // Si entra aquí, significa que la contraseña estaba mal o el usuario no existe.
+            // Mostramos el mensaje que nos mandó el backend en el authController.
+            mensajeError.textContent = data.mensaje || 'Credenciales incorrectas';
+            mensajeError.style.display = 'block'; // Hacemos visible la caja roja de error
+        }
+
+    } catch (error) {
+        // Si entra al catch, significa que tu servidor de Node.js está apagado
+        // o que hay un problema con tu conexión a internet (el fetch falló a nivel de red).
+        console.error('Error de conexión:', error);
+        mensajeError.textContent = 'Error al conectar con el servidor.';
+        mensajeError.style.display = 'block';
     }
-  } catch (error) {
-    mensaje.innerHTML = `<p class="error">Error al eliminar el producto.</p>`;
-  }
-}
+});

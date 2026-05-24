@@ -1,0 +1,274 @@
+/* =========================================
+    DASHBOARD
+========================================= */
+
+/* El style.css global usa display:flex en el body para centrar el login.
+   Aquí lo reseteamos para que el dashboard fluya normalmente de arriba a abajo. */
+body {
+    display: block;
+    height: auto;
+    min-height: 100vh;
+    /* El fondo del tema cubre toda la pantalla aunque el contenido sea corto */
+}
+
+
+/* =========================================
+    BARRA DE NAVEGACIÓN SUPERIOR
+========================================= */
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    /* Título a la izquierda, controles a la derecha */
+    align-items: center;
+    background-color: var(--bg-container);
+    padding: 15px 30px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    /* Sombra suave que separa el nav del contenido */
+    margin-bottom: 30px;
+}
+
+.navbar h2 {
+    margin: 0;
+    /* Sin margen, para que quede perfectamente centrado con los botones */
+    color: var(--text-main);
+}
+
+/* Agrupa el botón de tema y el de cerrar sesión */
+.nav-controls {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+/* En el login, el botón de tema usaba position:absolute para pegarse a la esquina.
+   Aquí lo reseteamos a static para que respete el flujo de la navbar. */
+.nav-controls .theme-toggle {
+    position: static;
+}
+
+
+/* =========================================
+    BOTONES GENÉRICOS
+========================================= */
+
+/* Botón rojo para acciones destructivas: eliminar, cerrar sesión */
+.btn-danger {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+.btn-danger:hover {
+    background-color: #c82333;
+    /* Versión más oscura del rojo al pasar el mouse */
+}
+
+/* Botón azul/morado principal, usa las variables del tema */
+.btn-primary {
+    background-color: var(--btn-bg);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 14px;
+    transition: background-color 0.3s;
+}
+
+.btn-primary:hover {
+    background-color: var(--btn-hover);
+}
+
+.btn-warning {
+    background-color: #d97706;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+.btn-warning:hover {
+    background-color: #b45309;
+}
+
+/* =========================================
+    CONTENEDOR CENTRAL
+========================================= */
+
+/* Limita el ancho del contenido y lo centra en pantallas grandes */
+.dashboard-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    /* El truco clásico para centrar un bloque: auto a los lados */
+    padding: 0 20px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+
+/* =========================================
+    SECCIÓN DE CONTROLES (filtros + botón nuevo ticket)
+========================================= */
+
+.controls-section {
+    display: flex;
+    justify-content: space-between;
+    /* Nuevo Ticket a la izquierda, filtros a la derecha */
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    /* En pantallas pequeñas los elementos bajan a la siguiente línea */
+    gap: 15px;
+}
+
+.filtros {
+    display: flex;
+    gap: 10px;
+}
+
+/* Botones de filtro tipo pestaña (Todos / Abiertos / Cerrados) */
+.btn-tab {
+    background-color: var(--input-bg);
+    color: var(--text-label);
+    border: 1px solid var(--input-border);
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s;
+}
+
+/* JavaScript agrega esta clase al tab activo para resaltarlo */
+.btn-tab.active {
+    background-color: var(--btn-bg);
+    color: white;
+    border-color: var(--btn-bg);
+}
+
+.btn-success {
+    background-color: #198754;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+.btn-success:hover {
+    background-color: #157347;
+}
+
+
+/* =========================================
+    TABLA DE TICKETS
+========================================= */
+
+/* Envuelve la tabla dándole fondo, sombra y bordes redondeados */
+.table-container {
+    background-color: var(--bg-container);
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    overflow-x: auto;
+    /* Scroll horizontal si hay muchas columnas en pantallas pequeñas */
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    /* Une los bordes de celdas vecinas, sin espacios dobles */
+    text-align: left;
+}
+
+thead th {
+    background-color: var(--bg-container);
+    color: var(--text-label);
+    padding: 15px;
+    border-bottom: 2px solid var(--input-border);
+    /* Línea más gruesa que separa cabecera del cuerpo */
+}
+
+tbody td {
+    padding: 15px;
+    border-bottom: 1px solid var(--input-border);
+    /* Línea fina entre filas */
+    color: var(--text-main);
+}
+
+tbody tr {
+    transition: background-color 0.2s;
+}
+
+/* Resalta la fila al pasar el mouse — versión modo claro */
+tbody tr:hover {
+    background-color: rgba(0, 0, 0, 0.03);
+}
+
+/* Mismo efecto pero para modo oscuro: usa blanco translúcido en vez de negro */
+body.dark-mode tbody tr:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+
+/* =========================================
+    BADGES DE PRIORIDAD
+========================================= */
+
+/* Estilo base de la píldora de color */
+.badge {
+    padding: 4px 8px;
+    border-radius: 12px;
+    /* Muy redondeado para forma de píldora */
+    font-size: 12px;
+    font-weight: bold;
+    color: white;
+    display: inline-block;
+    /* Permite aplicar padding sin ocupar toda la línea */
+}
+
+.badge.critica {
+    background-color: #7c0000;
+    color: #fff;
+}
+
+.badge.alta {
+    background-color: #dc3545;
+    color: #fff;
+}
+
+/* Rojo: urgente */
+.badge.media {
+    background-color: #ffc107;
+    color: #333;
+}
+
+/* Amarillo: texto oscuro para contraste */
+.badge.baja {
+    background-color: #28a745;
+    color: #fff;
+}
+
+/* Verde: sin urgencia */
+
+thead th[data-col] {
+    cursor: pointer;
+    user-select: none;
+}
+
+thead th[data-col]:hover {
+    opacity: 0.8;
+}
+
+thead th.orden-asc::after  { content: ' ▲'; font-size: 0.7rem; }
+thead th.orden-desc::after { content: ' ▼'; font-size: 0.7rem; }

@@ -1,117 +1,150 @@
+/* =========================================
+    VARIABLES DE TEMA (CLARO POR DEFECTO)
+========================================= */
+:root {
+    --bg-body: #f4f7f6;
+    --bg-container: #ffffff;
+    --text-main: #333333;
+    --text-label: #555555;
+    --input-border: #cccccc;
+    --input-bg: #ffffff;
+    --input-text: #333333;
+    --btn-bg: #0056b3;
+    --btn-hover: #004494;
+}
+
+/* VARIABLES PARA MODO OSCURO */
+body.dark-mode {
+    --bg-body: #121212;
+    --bg-container: #1e1e1e;
+    --text-main: #e0e0e0;
+    --text-label: #bbbbbb;
+    --input-border: #444444;
+    --input-bg: #2c2c2c;
+    --input-text: #e0e0e0;
+    --btn-bg: #3700b3;
+    --btn-hover: #6200ee;
+}
+
+/* =========================================
+ESTILOS BASE Y MAQUETACIÓN
+========================================= */
 body {
-  font-family: Arial, sans-serif;
-  background-color: #f4f6f9;
-  margin: 0;
-  padding: 20px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--bg-body);
+    color: var(--text-main);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-.container {
-  max-width: 1000px;
-  margin: auto;
+/* Contenedor principal de la tarjeta de Login */
+.login-container {
+    background-color: var(--bg-container);
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    width: 100%;
+    max-width: 350px;
+    text-align: center;
+    transition: background-color 0.3s ease;
 }
 
-h1 {
-  text-align: center;
-  color: #333;
+.login-container h2 {
+    color: var(--text-main);
+    margin-bottom: 25px;
+    margin-top: 0;
 }
 
-.card {
-  background: white;
-  border-radius: 10px;
-  padding: 20px;
-  margin-bottom: 20px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-.grupo {
-  margin-bottom: 15px;
+form div {
+    margin-bottom: 20px;
+    text-align: left;
 }
 
 label {
-  display: block;
-  margin-bottom: 6px;
-  font-weight: bold;
+    display: block;
+    margin-bottom: 8px;
+    color: var(--text-label);
+    font-weight: 600;
+    font-size: 14px;
 }
 
-input {
-  width: 100%;
-  padding: 10px;
-  box-sizing: border-box;
+/* Inputs de texto y password */
+input[type="text"],
+input[type="password"] {
+    width: 100%;
+    padding: 12px;
+    background-color: var(--input-bg);
+    color: var(--input-text);
+    border: 1px solid var(--input-border);
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 14px;
+    transition: border-color 0.3s ease, background-color 0.3s ease, color 0.3s ease;
 }
 
-button {
-  background-color: #0078d4;
-  color: white;
-  border: none;
-  padding: 10px 16px;
-  cursor: pointer;
-  border-radius: 5px;
+input[type="text"]:focus,
+input[type="password"]:focus {
+    border-color: var(--btn-bg);
+    outline: none;
 }
 
-button:hover {
-  background-color: #005ea3;
+/* Botón de ingreso */
+button[type="submit"] {
+    width: 100%;
+    padding: 12px;
+    background-color: var(--btn-bg);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+    margin-top: 10px;
 }
 
-.btn-secundario {
-  background-color: #555;
+button[type="submit"]:hover {
+    background-color: var(--btn-hover);
 }
 
-.btn-secundario:hover {
-  background-color: #333;
+/* Mensaje de error dinámico */
+#mensajeError {
+    margin-top: 20px;
+    font-size: 14px;
+    background-color: #ffe6e6;
+    color: #cc0000;
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #ffcccc;
 }
 
-.btn-peligro {
-  background-color: #c62828;
+body.dark-mode #mensajeError {
+    background-color: #441111;
+    color: #ffaaaa;
+    border: 1px solid #662222;
 }
 
-.btn-peligro:hover {
-  background-color: #8e1d1d;
+/* =========================================
+BOTÓN DEL INTERRUPTOR DE TEMA (LUNA/SOL)
+========================================= */
+.theme-toggle {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    width: auto;
+    padding: 5px;
+    margin: 0;
+    transition: transform 0.2s;
 }
 
-.btn-accion {
-  margin-right: 8px;
-  margin-bottom: 5px;
-}
-
-.barra-superior {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-  margin-bottom: 15px;
-}
-
-#mensaje {
-  margin-top: 15px;
-}
-
-.exito {
-  color: green;
-  font-weight: bold;
-}
-
-.error {
-  color: red;
-  font-weight: bold;
-}
-
-.tabla-responsive {
-  overflow-x: auto;
-}
-
-.tabla {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 15px;
-}
-
-.tabla th,
-.tabla td {
-  border: 1px solid #ddd;
-  padding: 10px;
-  text-align: left;
-}
-
-.tabla th {
-  background-color: #0078d4;
-  color: white;
+.theme-toggle:hover {
+    transform: scale(1.1);
 }

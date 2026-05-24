@@ -1,19 +1,22 @@
 
 // Responsable:
-// recibir request HTTP,
-// validar entrada,
-// devolver respuesta HTTP.
+// - Recibir request HTTP
+// - Validar flujo HTTP
+// - Invocar Services
+// - Retornar respuestas HTTP
 
-// controllers/ticketController.js
 
 // Importar servicio
-const ticketService = require('../services/ticketService');
+const ticketService =
+    require(
+        '../services/ticketService'
+    );
 
 
-// =====================
+// ======================================
 // POST /tickets
 // Crear ticket
-// =====================
+// ======================================
 
 const crear =
     async (
@@ -31,7 +34,7 @@ const crear =
                     );
 
 
-            // 201
+            // 201 → creado
             return res
                 .status(201)
                 .json(
@@ -39,12 +42,14 @@ const crear =
                 );
 
         }
-        catch (error) {
+        catch (
+        error
+        ) {
 
-            console.error(error);
+            console.error(
+                error
+            );
 
-
-            // 500
             return res
                 .status(500)
                 .json({
@@ -59,10 +64,10 @@ const crear =
     };
 
 
-// =====================
+// ======================================
 // GET /tickets
-// Listar tickets
-// =====================
+// Obtener tickets activos
+// ======================================
 
 const listar =
     async (
@@ -78,7 +83,6 @@ const listar =
                     .obtenerTodos();
 
 
-            // 200
             return res
                 .status(200)
                 .json(
@@ -86,7 +90,13 @@ const listar =
                 );
 
         }
-        catch {
+        catch (
+        error
+        ) {
+
+            console.error(
+                error
+            );
 
             return res
                 .status(500)
@@ -102,10 +112,10 @@ const listar =
     };
 
 
-// =====================
+// ======================================
 // GET /tickets/:id
-// Obtener ticket
-// =====================
+// Obtener ticket específico
+// ======================================
 
 const obtenerPorId =
     async (
@@ -123,7 +133,6 @@ const obtenerPorId =
                     );
 
 
-            // 404
             if (
                 !ticket
             ) {
@@ -140,7 +149,6 @@ const obtenerPorId =
             }
 
 
-            // 200
             return res
                 .status(200)
                 .json(
@@ -148,7 +156,13 @@ const obtenerPorId =
                 );
 
         }
-        catch {
+        catch (
+        error
+        ) {
+
+            console.error(
+                error
+            );
 
             return res
                 .status(500)
@@ -163,12 +177,14 @@ const obtenerPorId =
 
     };
 
-// =====================
-// PUT /tickets/:id
-// Actualizar ticket
-// =====================
 
-const actualizar =
+// ======================================
+// PUT /tickets/:id/evaluar
+// Evaluar ticket
+// (Admin clasifica)
+// ======================================
+
+const evaluar =
     async (
         req,
         res
@@ -179,7 +195,7 @@ const actualizar =
             const ticket =
 
                 await ticketService
-                    .actualizar(
+                    .evaluar(
 
                         req.params.id,
 
@@ -188,7 +204,6 @@ const actualizar =
                     );
 
 
-            // 404
             if (
                 !ticket
             ) {
@@ -205,7 +220,6 @@ const actualizar =
             }
 
 
-            // 200
             return res
                 .status(200)
                 .json(
@@ -213,12 +227,14 @@ const actualizar =
                 );
 
         }
-        catch (error) {
+        catch (
+        error
+        ) {
 
-            console.error(error);
+            console.error(
+                error
+            );
 
-
-            // 500
             return res
                 .status(500)
                 .json({
@@ -233,12 +249,13 @@ const actualizar =
     };
 
 
-// =====================
-// DELETE /tickets/:id
-// Eliminar ticket
-// =====================
+// ======================================
+// PATCH /tickets/:id/resolver
+// Resolver ticket
+// (Soft delete)
+// ======================================
 
-const eliminar =
+const resolver =
     async (
         req,
         res
@@ -246,17 +263,19 @@ const eliminar =
 
         try {
 
-            const eliminado =
+            const resultado =
 
                 await ticketService
-                    .eliminar(
+                    .resolver(
                         req.params.id
                     );
 
 
-            // 404
             if (
-                !eliminado
+                resultado
+                    .affectedRows
+                ===
+                0
             ) {
 
                 return res
@@ -271,23 +290,24 @@ const eliminar =
             }
 
 
-            // 200
             return res
                 .status(200)
                 .json({
 
                     mensaje:
-                        'Ticket eliminado correctamente'
+                        'Ticket marcado como resuelto'
 
                 });
 
         }
-        catch (error) {
+        catch (
+        error
+        ) {
 
-            console.error(error);
+            console.error(
+                error
+            );
 
-
-            // 500
             return res
                 .status(500)
                 .json({
@@ -301,17 +321,16 @@ const eliminar =
 
     };
 
-// =====================
+
+// ======================================
 // GET /tickets/historial
-// =====================
+// Tickets cerrados
+// ======================================
 
 const historial =
     async (
-
         req,
-
         res
-
     ) => {
 
         try {
@@ -329,8 +348,13 @@ const historial =
                 );
 
         }
+        catch (
+        error
+        ) {
 
-        catch {
+            console.error(
+                error
+            );
 
             return res
                 .status(500)
@@ -345,86 +369,51 @@ const historial =
 
     };
 
+// ======================================
+// PUT /tickets/:id
+// Editar ticket
+// ======================================
 
-// =====================
-// PATCH /tickets/:id/resolver
-// =====================
+const editar = async (req, res) => {
 
-const resolver =
-    async (
+    try {
+        const ticket = await ticketService.editarTicket(
+            req.params.id,
+            req.body
+        );
 
-        req,
-
-        res
-
-    ) => {
-
-        try {
-
-            const resultado =
-
-                await ticketService
-                    .resolver(
-
-                        req.params.id
-
-                    );
-
-
-            // Ticket no existe
-            if (
-
-                resultado
-                    .affectedRows
-                === 0
-
-            ) {
-
-                return res
-                    .status(404)
-                    .json({
-
-                        mensaje:
-                            'Ticket no encontrado'
-
-                    });
-
-            }
-
-
-            // Ticket actualizado
-            return res
-                .status(200)
-                .json({
-
-                    mensaje:
-                        'Ticket marcado como resuelto'
-
-                });
-
+        if (!ticket) {
+            return res.status(404).json({ mensaje: 'Ticket no encontrado' });
         }
 
-        catch {
+        return res.status(200).json(ticket);
 
-            return res
-                .status(500)
-                .json({
-
-                    mensaje:
-                        'Error interno'
-
-                });
-
-        }
-
-    };
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ mensaje: 'Error interno' });
+    }
+};
 
 
-// Exportar
-module.exports={
+
+// ======================================
+// EXPORTAR
+// ======================================
+
+module.exports = {
+
     crear,
+
     listar,
-    historial,
+
+    obtenerPorId,
+
+    evaluar,
+
+    editar,
+
     resolver,
-    obtenerPorId
+
+    historial
+
 };

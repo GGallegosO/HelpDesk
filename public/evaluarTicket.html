@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evaluar Ticket</title>
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/nuevoTicket.css">
+    <link rel="stylesheet" href="css/evaluarTicket.css">
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <h2>Evaluación de Ticket</h2>
+        <div class="nav-controls">
+            <button id="themeToggle" class="btn-tab">🌙</button>
+        </div>
+    </nav>
+
+    <main class="dashboard-container">
+        <div class="form-container">
+            <h2 style="text-align: center; margin-bottom: 20px;">Clasificación del Caso</h2>
+
+            <div id="detalleTicketOriginal" class="ticket-info-box">
+                <p><strong>Cargando datos del ticket...</strong></p>
+            </div>
+
+            <form id="formEvaluacion">
+
+                <div class="form-group">
+                    <label>Categoría</label>
+                    <select id="categoria" required>
+                        <option value="">Seleccione una opción...</option>
+                        <option value="hardware">Hardware</option>
+                        <option value="software">Software</option>
+                        <option value="red">Red</option>
+                        <option value="cuenta">Cuenta</option>
+                        <option value="otro">Otro</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Impacto</label>
+                    <select id="impacto" required>
+                        <option value="">Seleccione una opción...</option>
+                        <option value="bajo">Bajo</option>
+                        <option value="medio">Medio</option>
+                        <option value="alto">Alto</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Urgencia</label>
+                    <select id="urgencia" required>
+                        <option value="">Seleccione una opción...</option>
+                        <option value="baja">Baja</option>
+                        <option value="media">Media</option>
+                        <option value="alta">Alta</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Tiempo estimado (Horas)</label>
+                    <input type="number" id="tiempo" min="1" required>
+                </div>
+
+                <!-- Prioridad calculada en tiempo real -->
+                <div class="form-group" style="grid-column: 1 / -1;">
+                    <label>Prioridad Calculada</label>
+                    <input type="text" id="prioridadCalculada" disabled
+                        placeholder="Se calculará automáticamente...">
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn-danger"
+                        onclick="window.location.href='dashboard.html'">Volver</button>
+                    <button type="submit" class="btn-primary">Guardar evaluación</button>
+                </div>
+
+            </form>
+
+            <p id="mensaje" style="text-align: center; margin-top: 15px; color: red;"></p>
+        </div>
+    </main>
+
+    <script src="js/evaluarTicket.js"></script>
+</body>
+
+</html>
