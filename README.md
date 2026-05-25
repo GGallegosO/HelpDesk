@@ -168,7 +168,7 @@ Respuesta exitosa (200):
 ```json
 {
   "mensaje": "Login exitoso",
-  "token": "",
+  "token": "<tu_token_secreto>",
   "rol": "admin"
 }
 ```
