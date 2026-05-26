@@ -161,9 +161,13 @@ async function cargarTickets(vista = 'activos') {
         // Convertimos la respuesta a un arreglo de objetos JS
         let tickets = await response.json();
 
-        // Filtro de seguridad: en historial solo mostramos resueltos
+        // Filtro de seguridad: 
         if (vista === 'historial') {
+            // En historial solo mostramos resueltos
             tickets = tickets.filter(t => t.estado === 'resuelto');
+        } else if (vista === 'activos') {
+            // ¡ESTA LÍNEA FALTABA! En activos ocultamos los resueltos
+            tickets = tickets.filter(t => t.estado !== 'resuelto');
         }
 
         ticketsCargados = tickets;
@@ -269,22 +273,31 @@ function editarTicket(id) {
 // =========================================
 //  NAVEGACIÓN Y FILTROS (TABS)
 // =========================================
-// Usamos el operador '?' (Optional Chaining) por si el botón no existe en el HTML no arroje error
 btnActivos?.addEventListener('click', () => {
     btnActivos.classList.add('active');
     btnHistorial.classList.remove('active');
-    const thEstado = document.querySelector('th[data-col="estado"]');
-    thEstado.dataset.col = 'estado'; // restaura el data-col
-    thEstado.textContent = 'Estado ↕';
+    
+    // Ahora lo buscamos por su ID inmutable
+    const thEstado = document.getElementById('thEstado');
+    if (thEstado) {
+        thEstado.dataset.col = 'estado'; // restaura el data-col
+        thEstado.textContent = 'Estado ↕';
+    }
+    
     cargarTickets('activos');
 });
 
 btnHistorial?.addEventListener('click', () => {
     btnHistorial.classList.add('active');
     btnActivos.classList.remove('active');
-    const thEstado = document.querySelector('th[data-col="estado"]');
-    thEstado.removeAttribute('data-col'); // quita el data-col → no es clickeable
-    thEstado.textContent = 'Estado';
+    
+    // Ahora lo buscamos por su ID inmutable
+    const thEstado = document.getElementById('thEstado');
+    if (thEstado) {
+        thEstado.removeAttribute('data-col'); // quita el data-col → no es clickeable
+        thEstado.textContent = 'Estado';
+    }
+    
     cargarTickets('historial');
 });
 
@@ -297,6 +310,21 @@ btnNuevoTicket?.addEventListener('click', () => {
 // =========================================
 const params = new URLSearchParams(window.location.search);
 const vistaInicial = params.get('vista') || 'activos';
+
+// Activamos el tab correcto visualmente
+if (vistaInicial === 'historial') {
+    btnHistorial.classList.add('active');
+    btnActivos.classList.remove('active');
+    
+    const thEstado = document.getElementById('thEstado');
+    if (thEstado) {
+        thEstado.removeAttribute('data-col');
+        thEstado.textContent = 'Estado';
+    }
+}
+
+// Cargamos la vista que corresponde
+cargarTickets(vistaInicial);
 
 // Activamos el tab correcto visualmente
 if (vistaInicial === 'historial') {
